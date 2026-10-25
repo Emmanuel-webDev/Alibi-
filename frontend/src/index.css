@@ -1,0 +1,219 @@
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/public-sans';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Colour tokens, as "R G B" channels (see tailwind.config.js).
+ * Two contexts: the charcoal shell (header, hero, nav, footer) and warm panels (forms, agreements).
+ * Each context sets the same names, so text-ink is light on the shell and dark on a light panel.
+ * All text pairs below were checked for WCAG AA (4.5:1) on their own surface.
+ * Meaning is fixed: verdigris = money that arrived, oxblood = debt or garnished, magenta = the primary action only.
+ */
+@layer base {
+  :root {
+    color-scheme: light dark;
+    --c-magenta: 216 18 123;      /* #D8127B, white text on it is 6.5:1 */
+    --c-magenta-deep: 181 15 102;
+
+    /* shell context, light mode */
+    --c-shell: 23 25 28;          /* #17191C */
+    --c-panel: 248 245 239;       /* #F8F5EF */
+    --c-ink: 242 238 230;
+    --c-ink-soft: 214 209 200;
+    --c-slate: 163 171 175;       /* 7.9:1 on shell */
+    --c-rule: 49 53 58;
+    --c-paper: 33 36 40;
+    --c-paper-deep: 42 46 51;
+    --c-verdigris: 92 196 164;
+    --c-verdigris-soft: 22 52 45;
+    --c-oxblood: 235 138 147;
+    --c-oxblood-soft: 58 28 32;
+    --c-amber: 227 182 90;
+    --c-amber-soft: 54 43 20;
+    --c-focus: 242 238 230;
+  }
+
+  /* warm working panels, light mode */
+  .panel {
+    --c-ink: 26 29 33;
+    --c-ink-soft: 52 57 62;
+    --c-slate: 86 94 99;          /* 6.2:1 on panel */
+    --c-rule: 227 221 210;
+    --c-paper: 255 255 255;
+    --c-paper-deep: 238 232 221;
+    --c-verdigris: 23 105 91;     /* 6.0:1 */
+    --c-verdigris-soft: 222 238 232;
+    --c-oxblood: 154 29 43;       /* 7.6:1 */
+    --c-oxblood-soft: 246 225 227;
+    --c-amber: 107 78 10;
+    --c-amber-soft: 246 236 208;
+    --c-focus: 26 29 33;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not(.light):not([data-theme="light"]) {
+      --c-shell: 13 14 16;
+      --c-panel: 27 30 34;
+    }
+    :root:not(.light):not([data-theme="light"]) .panel {
+      --c-ink: 237 233 225;
+      --c-ink-soft: 210 205 196;
+      --c-slate: 162 170 174;     /* 7.0:1 on dark panel */
+      --c-rule: 48 53 58;
+      --c-paper: 36 40 45;
+      --c-paper-deep: 43 48 53;
+      --c-verdigris: 92 196 164;
+      --c-verdigris-soft: 23 59 51;
+      --c-oxblood: 238 142 151;
+      --c-oxblood-soft: 64 30 35;
+      --c-amber: 227 182 90;
+      --c-amber-soft: 58 46 20;
+      --c-focus: 237 233 225;
+    }
+  }
+
+  :root.dark, [data-theme="dark"] {
+    --c-shell: 13 14 16;
+    --c-panel: 27 30 34;
+  }
+  :root.dark .panel, [data-theme="dark"] .panel, [data-theme="dark"].panel {
+    --c-ink: 237 233 225;
+    --c-ink-soft: 210 205 196;
+    --c-slate: 162 170 174;
+    --c-rule: 48 53 58;
+    --c-paper: 36 40 45;
+    --c-paper-deep: 43 48 53;
+    --c-verdigris: 92 196 164;
+    --c-verdigris-soft: 23 59 51;
+    --c-oxblood: 238 142 151;
+    --c-oxblood-soft: 64 30 35;
+    --c-amber: 227 182 90;
+    --c-amber-soft: 58 46 20;
+    --c-focus: 237 233 225;
+  }
+
+  :root.light, [data-theme="light"] {
+    --c-shell: 23 25 28;
+    --c-panel: 248 245 239;
+  }
+  :root.light .panel, [data-theme="light"] .panel, [data-theme="light"].panel {
+    --c-ink: 26 29 33;
+    --c-ink-soft: 52 57 62;
+    --c-slate: 86 94 99;
+    --c-rule: 227 221 210;
+    --c-paper: 255 255 255;
+    --c-paper-deep: 238 232 221;
+    --c-verdigris: 23 105 91;
+    --c-verdigris-soft: 222 238 232;
+    --c-oxblood: 154 29 43;
+    --c-oxblood-soft: 246 225 227;
+    --c-amber: 107 78 10;
+    --c-amber-soft: 246 236 208;
+    --c-focus: 26 29 33;
+  }
+
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: rgb(var(--c-shell));
+    color: rgb(var(--c-ink));
+    @apply font-sans antialiased;
+    font-feature-settings: 'tnum' 1;
+  }
+  h1, h2, h3 { @apply font-display; letter-spacing: -0.02em; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 3px solid rgb(var(--c-focus)); outline-offset: 3px; border-radius: 9999px; }
+  .field:focus-visible { border-radius: 0.75rem; }
+  ::selection { background: rgb(var(--c-verdigris) / 0.3); }
+}
+
+@layer components {
+  .panel {
+    border-radius: 1.75rem;
+    background-color: rgb(var(--c-panel));
+    color: rgb(var(--c-ink));
+  }
+  .field {
+    width: 100%;
+    border-radius: 0.75rem;
+    border-width: 1px;
+    border-color: rgb(var(--c-rule));
+    background-color: rgb(var(--c-paper));
+    padding: 0.625rem 0.875rem;
+    font-size: 15px;
+    color: rgb(var(--c-ink));
+  }
+  .field::placeholder {
+    color: rgb(var(--c-slate));
+  }
+  .field:disabled {
+    background-color: rgb(var(--c-paper-deep));
+    color: rgb(var(--c-slate));
+  }
+  .btn {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding: 0.625rem 1.25rem;
+    font-size: 15px;
+    font-weight: 600;
+    transition-property: background-color, color, border-color;
+    transition-duration: 150ms;
+  }
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .btn-primary {
+    background-color: rgb(var(--c-magenta));
+    color: #ffffff;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: rgb(var(--c-magenta-deep));
+  }
+  .btn-secondary {
+    border: 1px solid rgb(var(--c-ink) / 0.7);
+    background-color: transparent;
+    color: rgb(var(--c-ink));
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background-color: rgb(var(--c-ink));
+    color: rgb(var(--c-panel));
+  }
+  .btn-quiet {
+    border-radius: 9999px;
+    background-color: transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgb(var(--c-ink));
+    text-decoration-line: underline;
+    text-decoration-color: rgb(var(--c-ink) / 0.3);
+    text-underline-offset: 4px;
+  }
+  .btn-quiet:hover {
+    text-decoration-color: rgb(var(--c-ink));
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 9999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+}
+
+/* The split bar is the only thing that moves on its own: its segments grow in once. */
+.split-seg { transition: width 900ms cubic-bezier(0.22, 1, 0.36, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .split-seg, .btn { transition: none; }
+  * { scroll-behavior: auto !important; }
+}

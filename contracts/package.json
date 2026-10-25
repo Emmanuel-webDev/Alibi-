@@ -1,0 +1,9 @@
+{
+  "name": "alibi-contracts",
+  "private": true,
+  "version": "2.1.0",
+  "description": "Alibi Protocol smart contracts (Foundry)",
+  "dependencies": {
+    "@openzeppelin/contracts": "5.0.2"
+  }
+}

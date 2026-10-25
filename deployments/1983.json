@@ -1,0 +1,10 @@
+{
+  "chainId": 1983,
+  "chainName": "QIE Testnet",
+  "deployed": true,
+  "verifier": "0xba9dE0CE99D28866CD1c8f18A80326341c8Aa699",
+  "registry": "0xB85C7373113c3b27582e3D01376b95cCbe2C791a",
+  "escrow": "0x6116D037D42D183d0691Cf75f7409e7ab0405D56",
+  "router": "0x431f0be54D33a159303B985Cab32cdf92E1755b4",
+  "vault": "0xC86991CE4BB6153119B2D5767235C51b113581B0"
+}
