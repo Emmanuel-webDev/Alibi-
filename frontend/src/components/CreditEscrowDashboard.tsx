@@ -68,7 +68,7 @@ function CreateAgreement({ assets, asset, setAsset }: { assets: AssetInfo[]; ass
           <SplitBar height="h-6" decimals={asset.decimals} symbol={asset.symbol} segments={[{ value: bond, tone: 'locked', label: 'Bond you lock now' }, { value: total - bond, tone: 'owed', label: 'Pay by the deadline' }]} />
           <p className="text-sm text-slate">
             {id.linked ? `Your tier is ${id.tierName}.` : 'Verify with QIE Pass and bind this wallet before you open an agreement.'}
-            {bond === total && id.linked ? ' With no history yet, the bond is the full amount.' : ''}
+            {bond === total && id.linked ? (id.defaultCount > 0 ? ' With a default on record, the bond is the full amount.' : ' With no history yet, the bond is the full amount.') : ''}
           </p>
         </div>
       )}

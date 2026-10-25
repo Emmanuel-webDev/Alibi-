@@ -81,7 +81,7 @@ export function JudgeSandbox() {
   return (
     <Section title="Judge sandbox" hint="Run the whole story on this network in three steps. Each step is a real transaction. The deal uses the shortest deadline allowed here.">
       <div className="space-y-8">
-        <Notice tone="info">You need about {fmt(DEAL + PAY)} test QIE in one wallet: {fmt(DEAL)} for the deal, then {fmt(PAY)} for the payment. Get it from the QIE testnet faucet.</Notice>
+        <Notice tone="info">You need about {fmt(DEAL + PAY)} QIE in one wallet: {fmt(DEAL)} for the deal, then {fmt(PAY)} for the payment. Get it from the QIE faucet.</Notice>
 
         <ol>
         <Step n={1} title="Put two wallets under one QIE identity" done={sameIdentity}>

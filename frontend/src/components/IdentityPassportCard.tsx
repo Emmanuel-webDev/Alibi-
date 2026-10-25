@@ -109,7 +109,13 @@ export function IdentityPassportCard({ asset = NATIVE }: { asset?: AssetInfo }) 
               <div className="min-w-0">
                 <dt className="text-[13px] text-slate">Tier</dt>
                 <dd className="font-display text-4xl font-semibold leading-tight sm:text-5xl">{id.tierName}</dd>
-                <dd className="mt-1 max-w-[34ch] text-[14px] text-slate">{id.tier >= 2 ? `You post ${bpsToPercent(id.floorBps)} of each deal as a bond.` : 'No history yet, so you post the full amount.'}</dd>
+                <dd className="mt-1 max-w-[34ch] text-[14px] text-slate">
+                  {id.tier >= 2
+                    ? `You post ${bpsToPercent(id.floorBps)} of each deal as a bond.`
+                    : id.defaultCount > 0
+                    ? 'Default on record, so you post the full amount.'
+                    : 'No history yet, so you post the full amount.'}
+                </dd>
               </div>
               <Stat size="lg" label="Debt owed" value={`${fmt(bal.debt, asset.decimals)} ${asset.symbol}`} tone={bal.debt > 0n ? 'bad' : undefined} />
             </dl>

@@ -31,7 +31,7 @@ export function ConnectBar() {
       ) : (
         <span className="hidden items-center gap-2 pl-3 pr-1 text-sm text-slate sm:inline-flex">
           <span aria-hidden className="h-2 w-2 rounded-full bg-verdigris" />
-          {ENV.chainId === 1983 ? 'QIE Testnet' : 'QIE Mainnet'}
+          QIE
         </span>
       )}
       <span className="rounded-full bg-paper-deep px-3 py-1.5 text-sm font-semibold tabular-nums text-ink" title={address}>

@@ -203,7 +203,7 @@ export function LandingPage({ onNavigate }: { onNavigate: (to: string) => void }
             What you need to use it
           </h2>
           <p className="mt-2 max-w-prose text-[15px] text-slate">
-            To participate on QIE Testnet, you need four things:
+            To participate on QIE, you need four things:
           </p>
 
           <ul className="mt-5 grid gap-3 sm:grid-cols-2">
@@ -211,7 +211,7 @@ export function LandingPage({ onNavigate }: { onNavigate: (to: string) => void }
               <span className="text-verdigris font-bold">✓</span>
               <div>
                 <strong className="block text-sm text-ink">A QIE Wallet</strong>
-                <span className="text-xs text-slate">Browser extension or mobile wallet connected to QIE Testnet (1983).</span>
+                <span className="text-xs text-slate">Browser extension or mobile wallet connected to QIE (1983).</span>
               </div>
             </li>
             <li className="flex items-start gap-3 rounded-xl border border-rule bg-paper p-3.5">
@@ -355,7 +355,7 @@ export function LandingPage({ onNavigate }: { onNavigate: (to: string) => void }
       <footer className="mt-20 border-t border-rule pt-10 text-[14px] text-slate">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-3">
-            <h3 className="font-sans text-sm font-semibold text-ink">Contract addresses (QIE Testnet)</h3>
+            <h3 className="font-sans text-sm font-semibold text-ink">Contract addresses (QIE)</h3>
             <ul className="space-y-1.5 text-xs font-mono">
               {DEPLOYMENT.contracts.map((c) => (
                 <li key={c.name} className="flex flex-col">
@@ -415,7 +415,7 @@ export function LandingPage({ onNavigate }: { onNavigate: (to: string) => void }
         </div>
 
         <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-rule/60 pt-6 text-xs text-slate">
-          <span>Testnet build • Chain {DEPLOYMENT.chainId}</span>
+          <span>Chain {DEPLOYMENT.chainId}</span>
           <a href="#main-content" className="underline hover:text-ink">Back to top ↑</a>
         </div>
       </footer>

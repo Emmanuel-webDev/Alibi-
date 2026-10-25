@@ -9,7 +9,7 @@ export interface DeployedContract {
 
 export const DEPLOYMENT = {
   chainId: ENV.chainId,
-  chainName: 'QIE Testnet',
+  chainName: 'QIE',
   isTestnet: ENV.chainId === 1983,
   explorerUrl: ENV.explorer,
   rpcUrl: ENV.rpcUrl,
