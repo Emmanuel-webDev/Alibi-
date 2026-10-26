@@ -111,10 +111,11 @@ Chain ID 1983. RPC: https://rpc2testnet.qie.digital/. Explorer: https://testnet.
 
 | Contract | Address |
 |---|---|
-| AlibiIdentityRegistry | `0xB85C7373113c3b27582e3D01376b95cCbe2C791a` |
-| AlibiCreditEscrow | `0x6116D037D42D183d0691Cf75f7409e7ab0405D56` |
-| AlibiSlashingRouter | `0x431f0be54D33a159303B985Cab32cdf92E1755b4` |
-| AlibiGatedVault | `0xC86991CE4BB6153119B2D5767235C51b113581B0` |
+| AlibiIdentityRegistry | `0x3d3a9226801703efD6A8234b33D8a0Ca7193e19d` |
+| AlibiCreditEscrow | `0x2776F50c304A6933B5e5Bb9d096F7345E7faB7E4` |
+| AlibiSlashingRouter | `0x7bB06a59bDe0a7c5489FBd0617E539fff465A1Eb` |
+| AlibiGatedVault | `0x35646BEc61949F0Cb646f3c94fD1283E3969db8a` |
+| Eip712AttestationVerifier | `0x80801469d2952670160e4Fabc271912AbaDA8280` |
 
 ## Repository layout
 
