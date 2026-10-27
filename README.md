@@ -3,11 +3,12 @@
 **Identity-bound credit for QIE.** Pay with a small bond instead of the full amount. If you default, the debt follows you, not one wallet.
 
 Built for QIE Mainnet Hackathon 3.0, track DeFi and Financial Infrastructure.
-Status: working on QIE testnet (chain 1983). Mainnet is not deployed. Contracts are unaudited.
+Status: deployed on QIE mainnet (chain 1990) and testnet (chain 1983). Contracts are unaudited.
 
 - Demo video: `<link>`
 - Testnet app: `<link>`
-- Contracts: see [Deployed contracts](#deployed-contracts-qie-testnet)
+- Mainnet contracts: see [Deployed contracts (Mainnet)](#deployed-contracts-mainnet)
+- Testnet contracts: see [Deployed contracts (QIE testnet)](#deployed-contracts-qie-testnet)
 
 ---
 
@@ -161,9 +162,104 @@ Keys live only in untracked `.env` files. Never paste them into chat, issues or 
 5. Real run: connect a QIE-verified wallet and click **Bind this wallet**.
 6. Judge sandbox: run a second relayer with `QIE_MODE=mock` and `SANDBOX_ENABLED=true` (it refuses to start unless the chain is 1983). Seed the demo identity with `script/SeedDemo.s.sol`. The sandbox identity's tier is seeded, not earned.
 
-## Mainnet
+## Mainnet deployment
 
-Not deployed. Before any mainnet step, work through `docs/MAINNET-CHECKLIST.md`: separate deployer, attestor and keeper keys; conservative caps; no seed script; `SANDBOX_ENABLED=false`; explicit sign-off.
+Deployed and verified on **QIE Blockchain Mainnet** (Chain ID: `1990`). Explorer: [https://mainnet.qie.digital/](https://mainnet.qie.digital/). Primary RPC: `https://rpc1mainnet.qie.digital/`. The official record is [`deployments/1990.json`](deployments/1990.json).
+
+> [!NOTE]
+> The contracts are unaudited. Exposure caps are deliberately conservative (50 / 200 / 1,000 QIE). All configuration sources are documented in [`docs/MAINNET-CONFIG-SOURCES.md`](docs/MAINNET-CONFIG-SOURCES.md).
+
+### Deployed contracts (Mainnet)
+
+Every contract source code is verified on the Blockscout explorer:
+
+| Contract | Address | Deploy Tx | Block | Explorer Status |
+|---|---|---|---|---|
+| **AlibiIdentityRegistry** | [`0xb7aD0880867bD370fFaA5fC3534f44fD2E548Ad8`](https://mainnet.qie.digital/address/0xb7aD0880867bD370fFaA5fC3534f44fD2E548Ad8) | [`0x4dcd...6f82`](https://mainnet.qie.digital/tx/0x4dcd033f51a32a2c4ef78ef692f9a77d717a17ca1e3899470e6591289dfe6f82) | 11485503 | Pass - Verified |
+| **AlibiCreditEscrow** | [`0x232eeb51813827738F88F298CbC4215bD4831a82`](https://mainnet.qie.digital/address/0x232eeb51813827738F88F298CbC4215bD4831a82) | [`0x8958...19f4`](https://mainnet.qie.digital/tx/0x89580e38d0e53fe79f0ac29e7717d20179b7d10e1695bce71deaad7a80ac19f4) | 11485504 | Pass - Verified |
+| **AlibiSlashingRouter** | [`0x8f5F29b285c286DB5eaC7e66B49188Cc913B2abc`](https://mainnet.qie.digital/address/0x8f5F29b285c286DB5eaC7e66B49188Cc913B2abc) | [`0xdc6c...4a4d`](https://mainnet.qie.digital/tx/0xdc6cbf2402d4489092260fd1602c154115d1a54289a53b792346e2b3ca484a4d) | 11485505 | Pass - Verified |
+| **AlibiGatedVault** | [`0xE19E266EfD3492367cF0eeb4D00ca3BAC1ADe549`](https://mainnet.qie.digital/address/0xE19E266EfD3492367cF0eeb4D00ca3BAC1ADe549) | [`0xec63...704a`](https://mainnet.qie.digital/tx/0xec639aa867e85c5b398b80c9316309ee0bc76f8bb6c069b68ee4c24b7292704a) | 11485506 | Pass - Verified |
+| **Eip712AttestationVerifier** | [`0xef530aFD52913Dfa62F0Cbc16e34F8b6bB32cD65`](https://mainnet.qie.digital/address/0xef530aFD52913Dfa62F0Cbc16e34F8b6bB32cD65) | [`0x9a0d...e882`](https://mainnet.qie.digital/tx/0x9a0d4a2a166cddbad589430f29a243d4ba629672d794a92c3dc3de7b2c81e882) | 11485503 | Pass - Verified |
+
+### Protocol addresses and caps
+
+- **Deployer**: `0x3dc13a8E85dF58EddaB0653eB2bf018b43118178`
+- **Attestor**: `0x38388ECfd6e5235CE20d360Ea26804180bb2EFF7`
+- **Keeper**: `0xC0477B7C64fB76C4f5dFc083c9113D59556f5222`
+- **New Owner**: `0x29fF710a3244f09d25A64889e2a3C0984B01eD55`
+- **Base Tier Cap**: `50 QIE` (`50000000000000000000` wei)
+- **Proven Tier Cap**: `200 QIE` (`200000000000000000000` wei)
+- **Global Unsecured Cap**: `1,000 QIE` (`1000000000000000000000` wei)
+- **Reputation Min Deal**: `1 QIE` (`1000000000000000000` wei)
+- **Protocol Fee**: `50 bps` (0.5%)
+
+### Stage 1 on-chain smoke test
+
+- **Create Agreement #1 (0.1 QIE)**: [`0x56e36ce3fcbf97151eed0a3ec30fee6023a5f4da8f9a907dbac88e7189acb03c`](https://mainnet.qie.digital/tx/0x56e36ce3fcbf97151eed0a3ec30fee6023a5f4da8f9a907dbac88e7189acb03c) (Block 11486224)
+- **Settle Agreement #1**: [`0xbb4e83723696e4e86f051dca0b43c9e00f266143f1993d1ceba547a4215b6013`](https://mainnet.qie.digital/tx/0xbb4e83723696e4e86f051dca0b43c9e00f266143f1993d1ceba547a4215b6013) (Block 11486229)
+
+### Stage 2 finalization (hardening & governance)
+
+Finalized via `Finalize.s.sol`. All 6 hardening transactions executed on-chain:
+
+| Action | Contract | Transaction Hash |
+|---|---|---|
+| `disableSeeding()` | `AlibiIdentityRegistry` | [`0x8cfd...7364`](https://mainnet.qie.digital/tx/0x8cfd03f14c37d0746e30b707c06d5f436f3a26701e4c5a46f4e3236a29117364) |
+| `lockModules()` | `AlibiIdentityRegistry` | [`0x771d...eab5`](https://mainnet.qie.digital/tx/0x771dc36db7b02ec7494b96b0d9a8c506cc03798e3fce83a18f6e6ab857d4eab5) |
+| `transferOwnership(NEW_OWNER)` | `AlibiIdentityRegistry` | [`0x2b6e...e8cf`](https://mainnet.qie.digital/tx/0x2b6e0ca6e85818ebc64fa0a5a9204bc1ab3deb09555cac22fb54314195e7e8cf) |
+| `transferOwnership(NEW_OWNER)` | `AlibiCreditEscrow` | [`0x9efd...46fe`](https://mainnet.qie.digital/tx/0x9efd5e48d9f4ecfb20b7f16a2602978b153daee65f0affdec9a76c04be4f46fe) |
+| `transferOwnership(NEW_OWNER)` | `Eip712AttestationVerifier` | [`0x03c2...8681`](https://mainnet.qie.digital/tx/0x03c2472454a58d98bf53c8159585838d64d3590bac0b4659c9f8fbd0f1448681) |
+| `transferOwnership(NEW_OWNER)` | `AlibiGatedVault` | [`0x143a...345e`](https://mainnet.qie.digital/tx/0x143a35efa48675c34cde3a40dc47389ddc24a10fa5f4e7111edbba231833345e) |
+
+### Verify it yourself
+
+Anyone can verify the mainnet contract state using `cast call`:
+
+```bash
+RPC="https://rpc1mainnet.qie.digital/"
+REGISTRY="0xb7aD0880867bD370fFaA5fC3534f44fD2E548Ad8"
+ESCROW="0x232eeb51813827738F88F298CbC4215bD4831a82"
+VERIFIER="0xef530aFD52913Dfa62F0Cbc16e34F8b6bB32cD65"
+VAULT="0xE19E266EfD3492367cF0eeb4D00ca3BAC1ADe549"
+
+# 1. Verify linked escrow and router (locked)
+cast call --rpc-url $RPC $REGISTRY "escrow()(address)"
+# => 0x232eeb51813827738F88F298CbC4215bD4831a82
+
+cast call --rpc-url $RPC $REGISTRY "router()(address)"
+# => 0x8f5F29b285c286DB5eaC7e66B49188Cc913B2abc
+
+# 2. Verify conservative exposure caps
+cast call --rpc-url $RPC $REGISTRY "unsecuredCap(uint8)(uint256)" 1
+# => 50000000000000000000 (50 QIE)
+
+cast call --rpc-url $RPC $REGISTRY "unsecuredCap(uint8)(uint256)" 2
+# => 200000000000000000000 (200 QIE)
+
+cast call --rpc-url $RPC $REGISTRY "globalUnsecuredCap()(uint256)"
+# => 1000000000000000000000 (1,000 QIE)
+
+# 3. Verify attestor authorization
+cast call --rpc-url $RPC $VERIFIER "isAttestor(address)(bool)" 0x38388ECfd6e5235CE20d360Ea26804180bb2EFF7
+# => true
+
+# 4. Verify escrow fee and duration
+cast call --rpc-url $RPC $ESCROW "feeBps()(uint16)"
+# => 50 (0.5%)
+
+cast call --rpc-url $RPC $ESCROW "minDuration()(uint64)"
+# => 15 (seconds)
+
+# 5. Verify hardening and ownership transfer
+cast call --rpc-url $RPC $REGISTRY "seedingEnabled()(bool)"
+# => false (reputation seeding permanently disabled)
+
+cast call --rpc-url $RPC $REGISTRY "modulesLocked()(bool)"
+# => true (module configuration permanently frozen)
+
+cast call --rpc-url $RPC $REGISTRY "pendingOwner()(address)"
+# => 0x29fF710a3244f09d25A64889e2a3C0984B01eD55
+```
 
 ## Security notes
 

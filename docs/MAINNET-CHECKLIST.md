@@ -8,21 +8,25 @@
 
 ## 1. Key Management and Separation
 
-Mainnet requires **three distinct, purpose-dedicated private keys**. None of these may be a personal wallet, developer hot wallet, or shared key.
+Mainnet requires **four distinct, purpose-dedicated addresses** (deployer, attestor, keeper, new owner). None of these may be a personal wallet, developer hot wallet, or shared address.
 
 - [ ] **Deployer Key**:
   - Used solely for broadcasting deployment scripts (`Deploy.s.sol`, `Finalize.s.sol`).
-  - Ownership of core contracts (`AlibiIdentityRegistry`, `AlibiCreditEscrow`, `AlibiAttestationVerifier`, `AlibiGatedVault`) must be transferred to a cold multisig or hardware governance wallet via `Finalize.s.sol`.
+  - Ownership of core contracts (`AlibiIdentityRegistry`, `AlibiCreditEscrow`, `AlibiAttestationVerifier`, `AlibiGatedVault`) must be transferred to the new owner (`NEW_OWNER`) via `Finalize.s.sol`.
   - Never reused for attestations or keeper actions.
 - [ ] **Attestor Key**:
   - Dedicated production signing key used exclusively by the relayer to sign EIP-712 `wallet -> identityId` attestations.
-  - Configured via `ATTESTOR_PRIVATE_KEY` in secure, untracked server `.env` or vault secrets manager.
-  - Never shares an address with the deployer or keeper.
+  - Configured via `ATTESTOR_PRIVATE_KEY` in secure, untracked server `.env.mainnet` or vault secrets manager.
+  - Never shares an address with the deployer, keeper, or new owner.
 - [ ] **Keeper Key**:
   - Dedicated automated account used by the relayer's keeper service (`KEEPER_PRIVATE_KEY`) to sweep expired defaults and call `triggerDefault(id)`.
-  - Funded with minimal operating gas only.
+  - Funded with minimal operating gas only (0.1 - 0.5 QIE).
   - Automatically monitored for low gas balance (skips without crashing when low).
-  - Never shares an address with the deployer or attestor.
+  - Never shares an address with the deployer, attestor, or new owner.
+- [ ] **New Owner Address**:
+  - Cold multisig or hardware governance wallet that assumes ownership upon execution of `Finalize.s.sol`.
+  - Disables seeding permanently and locks module configurations.
+  - Distinct from deployer, attestor, and keeper.
 - [ ] **Secret Storage**:
   - All keys must live only in untracked `.env` files or secure secret stores (AWS Secrets Manager / Vault).
   - Zero private keys, seed phrases, or sensitive credentials may ever be committed to git.
@@ -118,12 +122,13 @@ Verification Date     : ________________________ (YYYY-MM-DD)
 Deployer Address (Safe): 0x__________________________________________________
 Attestor Address       : 0x__________________________________________________
 Keeper Address         : 0x__________________________________________________
+New Owner Address      : 0x__________________________________________________
 
 Target Mainnet Chain ID: ________________________
 Confirmed RPC URL      : ____________________________________________________
 
-[ ] I have verified that 3 distinct private keys are configured in secure storage.
-[ ] I have verified that conservative caps (50 / 200 / 1000 QIE) are configured.
+[ ] I have verified that 4 distinct addresses (deployer, attestor, keeper, new owner) are configured.
+[ ] I have verified that conservative caps (50 / 200 / 1,000 QIE) are configured.
 [ ] I have verified that SeedDemo is guarded and cannot execute on mainnet.
 [ ] I have verified that QIE_MODE=live, IDENTITY_ANCHOR=did, and SANDBOX_ENABLED=false.
 [ ] I have reviewed the unaudited status and honest trust limits outlined above.

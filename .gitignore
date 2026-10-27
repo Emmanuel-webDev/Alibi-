@@ -5,7 +5,9 @@ backend/dist/
 
 .env
 .env.*
+.env.mainnet
 !.env.example
+!.env.*.example
 
 contracts/out/
 contracts/cache/
@@ -15,6 +17,7 @@ cache/
 
 deployments/*.json
 !deployments/1983.json
+!deployments/1990.json
 
 backend/data/
 data/
@@ -27,3 +30,10 @@ identities.json
 .idea/
 .agents/
 _private_scripts/
+
+# Temporary and test scripts
+frontend/scripts/smoke_test_escrow.mjs
+scratch*.mjs
+*.tmp
+*.bak
+

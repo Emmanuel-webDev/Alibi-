@@ -211,7 +211,7 @@ export function LandingPage({ onNavigate }: { onNavigate: (to: string) => void }
               <span className="text-verdigris font-bold">✓</span>
               <div>
                 <strong className="block text-sm text-ink">A QIE Wallet</strong>
-                <span className="text-xs text-slate">Browser extension or mobile wallet connected to QIE (1983).</span>
+                <span className="text-xs text-slate">Browser extension or mobile wallet connected to QIE ({DEPLOYMENT.chainId}).</span>
               </div>
             </li>
             <li className="flex items-start gap-3 rounded-xl border border-rule bg-paper p-3.5">

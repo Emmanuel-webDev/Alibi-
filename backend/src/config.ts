@@ -11,7 +11,11 @@ const schema = z
 
     // chain
     CHAIN_ID: z.coerce.number().int().default(1983),
+    CHAIN_NAME: z.string().default('QIE'),
     RPC_URL: z.string().url().default('https://rpc2testnet.qie.digital/'),
+    EXPLORER_URL: z.string().url().default('https://testnet.qie.digital'),
+    NATIVE_SYMBOL: z.string().default('QIE'),
+    NATIVE_DECIMALS: z.coerce.number().int().default(18),
     START_BLOCK: z.coerce.bigint().default(0n),
 
     // contracts (written by `forge script Deploy`; see deployments/<chainId>.json)

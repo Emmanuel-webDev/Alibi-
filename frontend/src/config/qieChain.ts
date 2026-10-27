@@ -1,11 +1,11 @@
 import { defineChain } from 'viem'
 import { ENV, isTestnet } from './env'
 
-/** QIE chain definition. Testnet is chain 1983; mainnet is selected purely by environment (VITE_CHAIN_ID). */
+/** QIE chain definition. Configuration is loaded dynamically from environment (VITE_CHAIN_ID, etc.). */
 export const qieChain = defineChain({
   id: ENV.chainId,
-  name: 'QIE',
-  nativeCurrency: { name: 'QIE', symbol: 'QIE', decimals: 18 },
+  name: ENV.chainName,
+  nativeCurrency: { name: ENV.symbol, symbol: ENV.symbol, decimals: ENV.decimals },
   rpcUrls: { default: { http: [ENV.rpcUrl] } },
   blockExplorers: { default: { name: 'QIE Explorer', url: ENV.explorer } },
   testnet: isTestnet,

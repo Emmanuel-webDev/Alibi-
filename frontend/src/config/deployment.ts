@@ -9,7 +9,7 @@ export interface DeployedContract {
 
 export const DEPLOYMENT = {
   chainId: ENV.chainId,
-  chainName: 'QIE',
+  chainName: ENV.chainName,
   isTestnet: ENV.chainId === 1983,
   explorerUrl: ENV.explorer,
   rpcUrl: ENV.rpcUrl,
@@ -37,7 +37,7 @@ export const DEPLOYMENT = {
     },
     {
       name: 'Eip712AttestationVerifier',
-      address: (import.meta.env.VITE_VERIFIER_ADDRESS as Address | undefined) ?? '0xba9dE0CE99D28866CD1c8f18A80326341c8Aa699' as Address,
+      address: ENV.verifier,
       description: 'Verifies EIP-712 cryptographic attestations signed by the Alibi relayer.',
     },
   ],

@@ -1,0 +1,82 @@
+{
+  "chainId": 1990,
+  "chainName": "QIE Blockchain Mainnet",
+  "rpcUrl": "https://rpc1mainnet.qie.digital/",
+  "explorerUrl": "https://mainnet.qie.digital",
+  "owner": "0x3dc13a8E85dF58EddaB0653eB2bf018b43118178",
+  "attestor": "0x38388ECfd6e5235CE20d360Ea26804180bb2EFF7",
+  "contracts": {
+    "Eip712AttestationVerifier": {
+      "address": "0xef530aFD52913Dfa62F0Cbc16e34F8b6bB32cD65",
+      "deployTxHash": "0x9a0d4a2a166cddbad589430f29a243d4ba629672d794a92c3dc3de7b2c81e882",
+      "deployBlock": 11485503
+    },
+    "AlibiIdentityRegistry": {
+      "address": "0xb7aD0880867bD370fFaA5fC3534f44fD2E548Ad8",
+      "deployTxHash": "0x4dcd033f51a32a2c4ef78ef692f9a77d717a17ca1e3899470e6591289dfe6f82",
+      "deployBlock": 11485503
+    },
+    "AlibiCreditEscrow": {
+      "address": "0x232eeb51813827738F88F298CbC4215bD4831a82",
+      "deployTxHash": "0x89580e38d0e53fe79f0ac29e7717d20179b7d10e1695bce71deaad7a80ac19f4",
+      "deployBlock": 11485504
+    },
+    "AlibiSlashingRouter": {
+      "address": "0x8f5F29b285c286DB5eaC7e66B49188Cc913B2abc",
+      "deployTxHash": "0xdc6cbf2402d4489092260fd1602c154115d1a54289a53b792346e2b3ca484a4d",
+      "deployBlock": 11485505
+    },
+    "AlibiGatedVault": {
+      "address": "0xE19E266EfD3492367cF0eeb4D00ca3BAC1ADe549",
+      "deployTxHash": "0xec639aa867e85c5b398b80c9316309ee0bc76f8bb6c069b68ee4c24b7292704a",
+      "deployBlock": 11485506
+    }
+  },
+  "config": {
+    "minDuration": 15,
+    "feeBps": 50,
+    "maxClaims": 10,
+    "baseCapWei": "50000000000000000000",
+    "provenCapWei": "200000000000000000000",
+    "globalUnsecuredCapWei": "1000000000000000000000",
+    "repMinDealWei": "1000000000000000000"
+  },
+  "initializationTxs": {
+    "setModules": {
+      "txHash": "0xcc7b3670a8c81500eac8abce9a9d4c60dc375b1b7e93d29ce3eff8a8c58309df",
+      "block": 11485507
+    },
+    "setUnsecuredCapBase": {
+      "txHash": "0x5b7f0a0e1b6025d0dee560841257ba1d6037f467354d097e11c90edc86b78c56",
+      "block": 11485507
+    },
+    "setUnsecuredCapProven": {
+      "txHash": "0xe393968a3d732588dfc601e2cf35ae2c8f15d4b36c849e28244b2e18814d8c71",
+      "block": 11485685
+    },
+    "setGlobalUnsecuredCap": {
+      "txHash": "0x4a5ec3a3e35aa85879871767c6bc15fc6049e5f5e9424b1449a56c02b44c7f08",
+      "block": 11485685
+    },
+    "setRepMinDeal": {
+      "txHash": "0x6491492f0313606e6b68da73fe7e6ab4508bd36cd8b972a433ffd5c6b20f6156",
+      "block": 11485686
+    }
+  },
+  "finalizationTxs": {
+    "disableSeeding": "0x8cfd03f14c37d0746e30b707c06d5f436f3a26701e4c5a46f4e3236a29117364",
+    "lockModules": "0x771dc36db7b02ec7494b96b0d9a8c506cc03798e3fce83a18f6e6ab857d4eab5",
+    "transferOwnershipRegistry": "0x2b6e0ca6e85818ebc64fa0a5a9204bc1ab3deb09555cac22fb54314195e7e8cf",
+    "transferOwnershipEscrow": "0x9efd5e48d9f4ecfb20b7f16a2602978b153daee65f0affdec9a76c04be4f46fe",
+    "transferOwnershipVerifier": "0x03c2472454a58d98bf53c8159585838d64d3590bac0b4659c9f8fbd0f1448681",
+    "transferOwnershipVault": "0x143a35efa48675c34cde3a40dc47389ddc24a10fa5f4e7111edbba231833345e"
+  },
+  "pendingOwner": "0x29fF710a3244f09d25A64889e2a3C0984B01eD55",
+  "seedingEnabled": false,
+  "modulesLocked": true,
+  "verifier": "0xef530aFD52913Dfa62F0Cbc16e34F8b6bB32cD65",
+  "registry": "0xb7aD0880867bD370fFaA5fC3534f44fD2E548Ad8",
+  "escrow": "0x232eeb51813827738F88F298CbC4215bD4831a82",
+  "router": "0x8f5F29b285c286DB5eaC7e66B49188Cc913B2abc",
+  "vault": "0xE19E266EfD3492367cF0eeb4D00ca3BAC1ADe549"
+}
