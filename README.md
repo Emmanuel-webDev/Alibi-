@@ -3,12 +3,63 @@
 **Identity-bound credit for QIE.** Pay with a small bond instead of the full amount. If you default, the debt follows you, not one wallet.
 
 Built for QIE Mainnet Hackathon 3.0, track DeFi and Financial Infrastructure.
-Status: deployed on QIE mainnet (chain 1990) and testnet (chain 1983). Contracts are unaudited.
+Status: submission runs on QIE testnet (chain 1983) with the QIE Pass sandbox. Contracts are also deployed on mainnet (chain 1990). Contracts are unaudited.
 
 - Demo video: `<link>`
 - Testnet app: `<link>`
 - Mainnet contracts: see [Deployed contracts (Mainnet)](#deployed-contracts-mainnet)
 - Testnet contracts: see [Deployed contracts (QIE testnet)](#deployed-contracts-qie-testnet)
+
+---
+
+## Environment
+
+**Submission runs on the QIE Pass sandbox and QIE testnet (chain 1983).** This was agreed with the QIE team (Ved, 29 Oct 2026). The mainnet contracts below are deployed and verified, but the full flow there waits on production QIE Pass keys.
+
+### What needs production keys on mainnet
+
+| Part | Sandbox / testnet | Mainnet needs |
+|---|---|---|
+| Wallet binding (relayer `is-verified`, consent, `claim-and-verify`) | `pk_test_` keys on `https://did-stapi.qie.digital` | `pk_live_` partner keys on `https://pass-api.qie.digital` |
+| Contracts (registry, escrow, router, vault, verifier) | Work as-is | Nothing. Already deployed on chain 1990 |
+| Agreements, settlement, default, garnishment | Work for any bound wallet | Work once a wallet is bound, which needs the live keys |
+
+Without live keys, mainnet agreements still open and settle, but every payer is unverified and posts a 100% bond.
+
+### Run it on sandbox and testnet
+
+Sandbox endpoint: `https://did-stapi.qie.digital` (QIE Pass partner API, `pk_test_` keys).
+
+Testnet (chain 1983, RPC `https://rpc2testnet.qie.digital/`, explorer https://testnet.qie.digital):
+
+| Contract | Address |
+|---|---|
+| AlibiIdentityRegistry | `0x3d3a9226801703efD6A8234b33D8a0Ca7193e19d` |
+| AlibiCreditEscrow | `0x2776F50c304A6933B5e5Bb9d096F7345E7faB7E4` |
+| AlibiSlashingRouter | `0x7bB06a59bDe0a7c5489FBd0617E539fff465A1Eb` |
+| AlibiGatedVault | `0x35646BEc61949F0Cb646f3c94fD1283E3969db8a` |
+| Eip712AttestationVerifier | `0x80801469d2952670160e4Fabc271912AbaDA8280` |
+
+Steps:
+
+1. `cd frontend && npm i && node scripts/sync-deployment.mjs 1983`. This writes the testnet addresses into `frontend/.env` and `backend/.env`.
+2. In `backend/.env` set:
+   ```
+   CHAIN_ID=1983
+   RPC_URL=https://rpc2testnet.qie.digital/
+   QIE_MODE=live
+   QIE_BASE_URL=https://did-stapi.qie.digital
+   QIE_PUBLIC_KEY=pk_test_...
+   QIE_SECRET_KEY=...
+   ATTESTOR_PRIVATE_KEY=0x...   # must be an attestor registered on the testnet verifier
+   ```
+3. `cd backend && npm i && npm run dev` (relayer on `:8787`).
+4. `cd frontend && npm run dev`, open http://localhost:5173, connect a QIE Wallet on testnet, and click **Bind this wallet**.
+5. No partner keys at all? Set `QIE_MODE=mock` and `SANDBOX_ENABLED=true` to use the Judge sandbox with the demo identities.
+
+### Demo video
+
+Sandbox walkthrough: `<link>`
 
 ---
 
