@@ -8,7 +8,7 @@ export interface KeeperClient {
 }
 
 export interface KeeperWalletClient {
-  writeContract: (args: { address: Address; abi: any; functionName: string; args: any[]; account?: any }) => Promise<Hex>
+  writeContract: (args: any) => Promise<Hex>
 }
 
 export interface KeeperLogger {

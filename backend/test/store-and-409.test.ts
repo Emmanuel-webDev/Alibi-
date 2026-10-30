@@ -74,7 +74,7 @@ describe('409 path and stored DID reuse', () => {
     async findExistingRequest(wallet: string): Promise<{ requestId: string; did: string; status: ConsentStatus } | null> {
       this.findExistingCalled = true
       if (wallet.toLowerCase() === acctA.address.toLowerCase()) {
-        return { requestId: 'req_existing_a', did: 'did:qie:existing_user_a', status: 'completed' }
+        return { requestId: 'req_existing_a', did: 'did:qie:existing_user_a', status: 'consent_given' }
       }
       return null
     }
