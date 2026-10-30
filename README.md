@@ -5,7 +5,7 @@
 Built for QIE Mainnet Hackathon 3.0, track DeFi and Financial Infrastructure.
 Status: submission runs on QIE testnet (chain 1983) with the QIE Pass sandbox. Contracts are also deployed on mainnet (chain 1990). Contracts are unaudited.
 
-- Demo video: `<link>`
+- Demo video: [YouTube Walkthrough](https://youtu.be/biLtkE_sQmI)
 - Testnet app: `<link>`
 - Mainnet contracts: see [Deployed contracts (Mainnet)](#deployed-contracts-mainnet)
 - Testnet contracts: see [Deployed contracts (QIE testnet)](#deployed-contracts-qie-testnet)
@@ -59,7 +59,7 @@ Steps:
 
 ### Demo video
 
-Sandbox walkthrough: `<link>`
+Sandbox walkthrough: [https://youtu.be/biLtkE_sQmI](https://youtu.be/biLtkE_sQmI)
 
 ---
 
