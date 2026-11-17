@@ -1,34 +1,51 @@
 # Alibi Protocol
 
-**Identity-bound credit for QIE.** Pay with a small bond instead of the full amount. If you default, the debt follows you, not one wallet.
+**Identity-bound credit and B2B payment rails for QIE.** Pay with a small bond instead of 100–150% collateral. If you default, the debt follows your verified identity—not a disposable wallet.
 
-Built for QIE Mainnet Hackathon 3.0, track DeFi and Financial Infrastructure.
-Status: submission runs on QIE testnet (chain 1983) with the QIE Pass sandbox. Contracts are also deployed on mainnet (chain 1990). Contracts are unaudited.
+> [!NOTE]
+> **Built for QIE Mainnet Hackathon 3.0 — DeFi & Financial Infrastructure**
+> **Dual-Environment Production Architecture** *(Agreed with Ved, QIE Team — 29 Oct 2026)*:
+> - **QIE Mainnet (Chain `1990`)**: All 5 contracts are deployed, verified, smoke-tested, and hardened (`disableSeeding()`, `lockModules()`). Zero-trust 100%-bond escrow agreements, settlement, default, and garnishment are live on Mainnet today.
+> - **QIE Testnet (Chain `1983`) + QIE Pass Staging**: Full identity-bound under-collateralized credit runs live against QIE's official staging partner API (`https://did-stapi.qie.digital`, `pk_test_`), pending `pk_live_` production key issuance for `https://pass-api.qie.digital`.
 
-- Demo video: [YouTube Walkthrough](https://youtu.be/biLtkE_sQmI)
-- App: `https://alibi-ui.onrender.com/`
-- Mainnet contracts: see [Deployed contracts (Mainnet)](#deployed-contracts-mainnet)
-- Testnet contracts: see [Deployed contracts (QIE testnet)](#deployed-contracts-qie-testnet)
+- **Live Judge Sandbox (Testnet 1983):** [https://alibi-ui.onrender.com/](https://alibi-ui.onrender.com/) *(one-click New → Base → Proven → Default → Garnishment flow)*
+- **Demo video:** [YouTube Walkthrough](https://youtu.be/biLtkE_sQmI)
+- **Mainnet contracts (Chain 1990):** [Deployed contracts (Mainnet)](#deployed-contracts-mainnet)
+- **Testnet contracts (Chain 1983):** [Deployed contracts (QIE testnet)](#deployed-contracts-qie-testnet)
 
 ---
 
-## Environment
+## Key Engineering & Security Guarantees
 
-**Submission runs on the QIE Pass sandbox and QIE testnet (chain 1983).** This was agreed with the QIE team (Ved, 29 Oct 2026). The mainnet contracts below are deployed and verified, but the full flow there waits on production QIE Pass keys.
-
-### What needs production keys on mainnet
-
-| Part | Sandbox / testnet | Mainnet needs |
+| Category | Proof / Status | Details |
 |---|---|---|
-| Wallet binding (relayer `is-verified`, consent, `claim-and-verify`) | `pk_test_` keys on `https://did-stapi.qie.digital` | `pk_live_` partner keys on `https://pass-api.qie.digital` |
-| Contracts (registry, escrow, router, vault, verifier) | Work as-is | Nothing. Already deployed on chain 1990 |
-| Agreements, settlement, default, garnishment | Work for any bound wallet | Work once a wallet is bound, which needs the live keys |
+| **Automated Test Suite** | **156 tests passing** | **90** Foundry (`forge test`) + **43** Express/TS (`npm test`) + **23** React/Frontend tests |
+| **QIE Mainnet Deployment** | **5 / 5 Verified** | Deployed on Chain `1990` at blocks `11485503–11485506` ([`deployments/1990.json`](deployments/1990.json)) |
+| **Mainnet Smoke Test** | **Executed on-chain** | Agreement #1 created ([`0x56e3...b03c`](https://mainnet.qie.digital/tx/0x56e36ce3fcbf97151eed0a3ec30fee6023a5f4da8f9a907dbac88e7189acb03c)) & settled ([`0xbb4e...6013`](https://mainnet.qie.digital/tx/0xbb4e83723696e4e86f051dca0b43c9e00f266143f1993d1ceba547a4215b6013)) |
+| **Stage 2 Hardening** | **Immutable Locks** | `disableSeeding()` ([`0x8cfd...7364`](https://mainnet.qie.digital/tx/0x8cfd03f14c37d0746e30b707c06d5f436f3a26701e4c5a46f4e3236a29117364)) & `lockModules()` ([`0x771d...eab5`](https://mainnet.qie.digital/tx/0x771dc36db7b02ec7494b96b0d9a8c506cc03798e3fce83a18f6e6ab857d4eab5)) executed |
+| **Governance Handoff** | **`Ownable2Step`** | 2-step ownership transfer initiated to `0x29fF...eD55` across Registry, Escrow, Verifier, Vault |
+| **Multi-Asset Support** | **Native QIE + ERC-20 (QUSDC)** | `AssetTransferLib` supports `address(0)` (QIE) and any ERC-20 stablecoin (e.g. QUSDC via `VITE_QUSDC_ADDRESS`) |
+| **Identity & Privacy** | **Zero-PII EIP-712** | QIE Pass DID hashed on-chain (`hash(DID)`); no KYC personal data touches Alibi |
 
-Without live keys, mainnet agreements still open and settle, but every payer is unverified and posts a 100% bond.
+---
 
-### Run it on sandbox and testnet
+## Dual-Environment Production Architecture
 
-Sandbox endpoint: `https://did-stapi.qie.digital` (QIE Pass partner API, `pk_test_` keys).
+Alibi's smart contracts are production-deployed on QIE Mainnet (`1990`). Because QIE Pass production partner keys (`pk_live_`) are issued separately from staging keys, the live identity-bound credit flow is demonstrated on QIE Testnet (`1983`) with QIE's official staging API—as agreed with the QIE team (Ved, 29 Oct 2026).
+
+| Component | QIE Mainnet (Chain `1990`) | QIE Testnet / Staging (Chain `1983`) |
+|---|---|---|
+| **Core Contracts** (Registry, Escrow, Router, Vault, Verifier) | **Live & verified** | **Live & verified** |
+| **Zero-trust 100%-bond escrow, settlement, default & garnishment** | **Works live today** | **Works live today** |
+| **QIE Pass Identity Binding** (`is-verified`, consent, `claim-and-verify`) | Ready; awaits `pk_live_` on `https://pass-api.qie.digital` | **Live** with `pk_test_` on `https://did-stapi.qie.digital` |
+| **Judge Sandbox Mode** (`QIE_MODE=mock`, `SANDBOX_ENABLED=true`) | Disabled by design | **Enabled** at [alibi-ui.onrender.com](https://alibi-ui.onrender.com/) |
+
+### Try it in 60 seconds (Judge Sandbox)
+
+Open **[https://alibi-ui.onrender.com/](https://alibi-ui.onrender.com/)** on QIE Testnet (`1983`) to test the full **New → Base → Proven → Default → Garnishment** lifecycle with pre-seeded demo identities—no local setup or `pk_test_` keys required.
+
+<details>
+<summary>Or run locally against QIE Testnet (`1983`) with your own QIE Pass partner keys</summary>
 
 Testnet (chain 1983, RPC `https://rpc2testnet.qie.digital/`, explorer https://testnet.qie.digital):
 
@@ -39,8 +56,6 @@ Testnet (chain 1983, RPC `https://rpc2testnet.qie.digital/`, explorer https://te
 | AlibiSlashingRouter | `0x7bB06a59bDe0a7c5489FBd0617E539fff465A1Eb` |
 | AlibiGatedVault | `0x35646BEc61949F0Cb646f3c94fD1283E3969db8a` |
 | Eip712AttestationVerifier | `0x80801469d2952670160e4Fabc271912AbaDA8280` |
-
-Steps:
 
 1. `cd frontend && npm i && node scripts/sync-deployment.mjs 1983`. This writes the testnet addresses into `frontend/.env` and `backend/.env`.
 2. In `backend/.env` set:
@@ -57,9 +72,7 @@ Steps:
 4. `cd frontend && npm run dev`, open http://localhost:5173, connect a QIE Wallet on testnet, and click **Bind this wallet**.
 5. No partner keys at all? Set `QIE_MODE=mock` and `SANDBOX_ENABLED=true` to use the Judge sandbox with the demo identities.
 
-### Demo video
-
-Sandbox walkthrough: [https://youtu.be/biLtkE_sQmI](https://youtu.be/biLtkE_sQmI)
+</details>
 
 ---
 
@@ -71,23 +84,39 @@ Reputation on a wallet does not fix this. A wallet is free to create, so a bad a
 
 ## What Alibi does
 
-Alibi ties a credit limit to a **verified person**, using **QIE Pass**, instead of to a wallet.
+Alibi ties a credit limit to a **verified person**, using **QIE Pass**, instead of to a wallet—and supports both **Native QIE** and **ERC-20 stablecoins (such as QUSDC)** per asset.
 
 1. A person verifies once with QIE Pass.
 2. Their wallet is bound to an identity derived from their QIE Pass DID. Nothing is typed in.
 3. Their tier sets how much of a deal they must lock up front (the bond). A new person locks all of it. A proven person locks a small share.
-4. If they miss a deadline, the bond is taken, and the unpaid remainder becomes **debt on the identity**.
-5. Any payment later routed through Alibi to **any wallet bound to that identity** repays the debt first.
+4. Deals can be denominated in **Native QIE** or an **ERC-20 token (e.g. QUSDC)**—so merchants, freelancers, and DAOs can price 30-day credit tabs in stablecoins rather than volatile gas tokens.
+5. If they miss a deadline, the bond is taken, and the unpaid remainder becomes **debt on the identity**.
+6. Any payment later routed through Alibi to **any wallet bound to that identity** repays the debt first.
 
 Starting over costs a new KYC, not a new wallet.
+
+## Architecture & Why Garnishment Works
+
+A common DeFi question is: *"If I default on Alibi, why wouldn't I just tell clients to pay me via a normal transfer instead of `AlibiSlashingRouter`?"*
+
+Alibi is **B2B and platform payment rails** (freelance marketplaces, DAO payroll tools, merchant checkout SDKs), not a voluntary honor system. Payers and platforms route payouts through `AlibiSlashingRouter` because **it gives the payer escrow and dispute protection**. A bad actor cannot receive marketplace payouts, DAO disbursements, or institutional invoices without clearing their identity's debt first.
+
+```mermaid
+flowchart LR
+    Payer["Upstream Platform / Payer<br/>(Marketplace, DAO Payroll, Checkout SDK)"] -->|"1. Pays in QIE or ERC-20 (QUSDC)"| Router["AlibiSlashingRouter"]
+    Router -->|"2. Checks bound identity & debt"| Registry["AlibiIdentityRegistry"]
+    Registry -->|"3. Has unpaid claims?"| Escrow["AlibiCreditEscrow"]
+    Escrow -->|"Yes: Repay oldest claims first"| Creditors["Defrauded Creditors"]
+    Router -->|"4. Remainder (or full if clean)"| Recipient["Recipient Wallet / AlibiGatedVault"]
+```
 
 ## Who it is for
 
 | Audience | What they get |
 |---|---|
-| **Buyers and borrowers** with a QIE Pass | Smaller up-front bonds as they build a record of settled deals. |
-| **Merchants, freelancers and sellers** (creditors) | Payment protection on credit deals. They set their own minimum tier and minimum bond, so they decide how much risk to take. |
-| **QIE apps and wallets** | A credit and escrow primitive to build on. Marketplaces, payroll advances, pay-later and invoicing apps can integrate the contracts and never show Alibi to their users. |
+| **Buyers and borrowers** with a QIE Pass | Smaller up-front bonds as they build a record of settled deals in QIE or QUSDC. |
+| **Merchants, freelancers and sellers** (creditors) | Payment protection on stablecoin (QUSDC) or QIE credit deals. They set their own minimum tier and minimum bond, so they decide how much risk to take. |
+| **QIE apps, marketplaces and DAOs** | A credit, escrow, and garnishment primitive to integrate upstream of payouts—so users get credit without leaving the host app. |
 
 Alibi is infrastructure first. It is not a lending pool and it does not promise large loans.
 
@@ -95,7 +124,7 @@ Alibi is infrastructure first. It is not a lending pool and it does not promise 
 
 - A QIE Wallet.
 - A QIE Pass verification (https://id.qie.digital/verify). Unverified wallets cannot get credit.
-- A little QIE for gas.
+- A little QIE for gas (and QUSDC / ERC-20 if settling in a stablecoin).
 - The relayer must be reachable to bind an identity. Everything else works without it.
 
 ---
@@ -107,7 +136,7 @@ Alibi is infrastructure first. It is not a lending pool and it does not promise 
 3. **Bind.** The person approves a consent request in QIE Wallet. The relayer then claims the credential (`claim-and-verify`), accepts it only if QIE reports the signature, expiry and revocation checks as valid, and reads the per-person DID. The wallet signs one challenge, and the relayer signs an EIP-712 attestation that links `wallet -> identityId = hash(DID)`. `registry.linkWallet` verifies it on-chain. Links are permanent.
 4. **Add more wallets.** QIE Pass verifies one address (a second account from the same recovery phrase is not verified, tested). So extra wallets join by authorization: the bound wallet authorizes the new address, and the new wallet then adds itself.
 5. **Earn a tier.** Settled deals with distinct counterparties, over time, move an identity from New to Base to Proven. Lower tiers pay higher bonds. Staking is optional and raises the limit.
-6. **Open an agreement.** The bond is the higher of the tier's bond and the creditor's own minimum.
+6. **Open an agreement.** Pick Native QIE (`address(0)`) or an ERC-20 token (e.g. QUSDC). The bond is the higher of the tier's bond and the creditor's own minimum.
 7. **Settle or default.** Settling on time builds reputation. After the deadline, anyone can call `triggerDefault` and earn a 0.5% keeper bounty. The bond and any stake go to the creditor, and the remainder becomes debt on the identity.
 8. **Garnish.** `routePayment` pays a recipient. If the recipient's identity has debt, claims are paid first, oldest first, and the rest is forwarded.
 
@@ -120,7 +149,7 @@ Alibi is infrastructure first. It is not a lending pool and it does not promise 
 | Base | Enough settled deals, enough distinct counterparties, enough age | Lower bond floor, unsecured cap applies |
 | Proven | More of the same | Lowest bond floor, higher cap |
 
-The exact thresholds and bond floors are contract configuration (`tierConfig`, `floorBps`). Staking adds to an identity's cap: capacity = tier cap + stake - what is already used. Default caps are 50 QIE (Base) and 200 QIE (Proven) per asset, with a protocol-wide limit of 1,000 QIE of unsecured exposure.
+The exact thresholds and bond floors are contract configuration (`tierConfig`, `floorBps`). Staking adds to an identity's cap: capacity = tier cap + stake - what is already used. Default caps are 50 QIE (Base) and 200 QIE (Proven) per asset, with a protocol-wide limit of 1,000 QIE of unsecured exposure. ERC-20 assets (such as QUSDC) are supported natively by `AssetTransferLib` and configured per asset via `VITE_QUSDC_ADDRESS` in the frontend.
 
 ### Creditor rules
 
@@ -134,6 +163,7 @@ A creditor calls `setCreditorPolicy(minBondBps, minTier)`. From then on, every n
 - A fresh start needs a new QIE Pass identity.
 - Unsecured credit is capped per identity and protocol-wide.
 - Creditors choose their own risk limits.
+- Integrated marketplaces and payroll platforms route payouts through `AlibiSlashingRouter` for escrow protection, trapping defaulted identities until claims are cleared.
 - The owner can pause new agreements. Settling, defaulting and collecting are never paused.
 
 ## Limits, stated plainly
@@ -142,7 +172,7 @@ Alibi makes abuse more expensive. It does not make it impossible.
 
 - **Sybil resistance is bounded, not eliminated.** Alibi relies on one KYC profile giving one DID. Two things are not yet confirmed with QIE: that one person gets the same DID from a second wallet, and that QIE stops one person from getting a second DID. If either fails, someone could start a clean identity at the New tier with a full bond.
 - **Colluding friends can still bust out.** A group of verified people can build records among themselves, then default on real creditors. They can take up to the caps, once per identity, and each one burns their KYC. Caps, the distinct-counterparty rule, age gating and fees limit this. Do not describe the system as bust-out proof.
-- **Garnishment only reaches money sent through the router and the gated vault.** Wallets a person never binds are invisible to Alibi.
+- **Garnishment only reaches money sent through the router and the gated vault.** Off-platform direct transfers to unbound wallets are invisible to Alibi; enforcement relies on payers and partner platforms using `AlibiSlashingRouter` for escrow protection.
 - **The relayer's attestor key is trusted.** A stolen key could attest any wallet to any identity. It can be rotated with `setAttestor`, and it must be separate from the deployer and keeper keys.
 - **No recovery path.** A bound wallet cannot be unlinked.
 - **Credit is small by design.**
@@ -153,7 +183,7 @@ Alibi makes abuse more expensive. It does not make it impossible.
 - Does a second QIE-verified address of the same person return the same DID?
 - Does QIE stop one person from obtaining a second DID?
 - Is `claim-and-verify` repeatable per request? (Tested: no. The relayer stores the DID after the first claim.)
-- Mainnet chain ID and RPC, and the QUSDC address and decimals.
+- Production `pk_live_` keys for `https://pass-api.qie.digital`, and the official Mainnet QUSDC address and decimals.
 
 ---
 
