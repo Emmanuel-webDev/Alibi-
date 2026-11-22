@@ -8,7 +8,7 @@
 > - **QIE Mainnet (Chain `1990`)**: All 5 contracts are deployed, verified, smoke-tested, and hardened (`disableSeeding()`, `lockModules()`). Zero-trust 100%-bond escrow agreements, settlement, default, and garnishment are live on Mainnet today.
 > - **QIE Testnet (Chain `1983`) + QIE Pass Staging**: Full identity-bound under-collateralized credit runs live against QIE's official staging partner API (`https://did-stapi.qie.digital`, `pk_test_`), pending `pk_live_` production key issuance for `https://pass-api.qie.digital`.
 
-- **Live Judge Sandbox (Testnet 1983):** [https://alibi-ui.onrender.com/](https://alibi-ui.onrender.com/) *(one-click New → Base → Proven → Default → Garnishment flow)*
+- **Live Judge Sandbox (Testnet 1983):** [https://alibi-x9kd.onrender.com/](https://alibi-x9kd.onrender.com/) *(one-click New → Base → Proven → Default → Garnishment flow)*
 - **Demo video:** [YouTube Walkthrough](https://youtu.be/biLtkE_sQmI)
 - **Mainnet contracts (Chain 1990):** [Deployed contracts (Mainnet)](#deployed-contracts-mainnet)
 - **Testnet contracts (Chain 1983):** [Deployed contracts (QIE testnet)](#deployed-contracts-qie-testnet)
@@ -38,11 +38,11 @@ Alibi's smart contracts are production-deployed on QIE Mainnet (`1990`). Because
 | **Core Contracts** (Registry, Escrow, Router, Vault, Verifier) | **Live & verified** | **Live & verified** |
 | **Zero-trust 100%-bond escrow, settlement, default & garnishment** | **Works live today** | **Works live today** |
 | **QIE Pass Identity Binding** (`is-verified`, consent, `claim-and-verify`) | Ready; awaits `pk_live_` on `https://pass-api.qie.digital` | **Live** with `pk_test_` on `https://did-stapi.qie.digital` |
-| **Judge Sandbox Mode** (`QIE_MODE=mock`, `SANDBOX_ENABLED=true`) | Disabled by design | **Enabled** at [alibi-ui.onrender.com](https://alibi-ui.onrender.com/) |
+| **Judge Sandbox Mode** (`QIE_MODE=live`, `SANDBOX_ENABLED=true`) | Disabled by design | **Enabled** at [alibi-x9kd.onrender.com](https://alibi-x9kd.onrender.com/) |
 
 ### Try it in 60 seconds (Judge Sandbox)
 
-Open **[https://alibi-ui.onrender.com/](https://alibi-ui.onrender.com/)** on QIE Testnet (`1983`) to test the full **New → Base → Proven → Default → Garnishment** lifecycle with pre-seeded demo identities—no local setup or `pk_test_` keys required.
+Open **[https://alibi-x9kd.onrender.com/](https://alibi-x9kd.onrender.com/)** on QIE Testnet (`1983`) to test the full **New → Base → Proven → Default → Garnishment** lifecycle with pre-seeded demo identities—no local setup or `pk_test_` keys required.
 
 <details>
 <summary>Or run locally against QIE Testnet (`1983`) with your own QIE Pass partner keys</summary>
