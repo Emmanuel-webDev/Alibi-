@@ -1,13 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { parseEther } from 'viem'
 import { ConnectBar } from './components/ConnectBar'
 import { CreditEscrowDashboard } from './components/CreditEscrowDashboard'
 import { IdentityPassportCard } from './components/IdentityPassportCard'
 import { JudgeSandbox } from './components/JudgeSandbox'
 import { LandingPage } from './components/LandingPage'
 import { SlashingRouterWidget } from './components/SlashingRouterWidget'
-import { SplitBar } from './components/SplitBar'
 import { SandboxProvider, useSandbox } from './hooks/useSandbox'
 import { Notice } from './components/ui'
 import { contractsConfigured, isTestnet } from './config/env'
@@ -100,19 +98,6 @@ function Shell({ onNavigate, initialTab, hash }: { onNavigate: (to: string) => v
           {!contractsConfigured && <Notice tone="bad">Contract addresses are missing. Set the VITE_*_ADDRESS values in .env (see .env.example) and restart.</Notice>}
         </div>
       )}
-
-      <section className="pb-12 pt-10 sm:pb-16 sm:pt-16" aria-labelledby="hero-title">
-        <h1 id="hero-title" className="max-w-[14ch] text-[2.75rem] font-bold leading-[1] sm:text-7xl">
-          Debt follows the person, not the wallet.
-        </h1>
-        <p className="mt-6 max-w-[56ch] text-lg leading-relaxed text-slate">
-          Pay with a small bond instead of the full amount. If you default, what you owe is taken from the next payment to any wallet linked to your QIE identity.
-        </p>
-        <figure className="mt-12 max-w-4xl">
-          <figcaption className="mb-4 text-[15px] text-slate">Someone sends 1,000 QIE to a wallet whose owner owes 450:</figcaption>
-          <SplitBar size="hero" segments={[{ value: parseEther('450'), tone: 'garnish', label: 'Goes to the creditor' }, { value: parseEther('550'), tone: 'net', label: 'Reaches the wallet' }]} />
-        </figure>
-      </section>
 
       <nav aria-label="Sections" className="sticky top-0 z-10 -mx-4 bg-shell/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <ul className="flex w-max max-w-full gap-1 overflow-x-auto rounded-full border border-rule bg-paper p-1">
