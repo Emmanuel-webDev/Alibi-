@@ -10,13 +10,7 @@ import { createWalletClient } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 const cfg = loadConfig()
-const client = createPublicClient({ transport: http(cfg.RPC_URL) })
-
-// sanity check: the RPC must be the chain the contracts were deployed to
-const actualChain = await client.getChainId()
-if (actualChain !== cfg.CHAIN_ID) {
-  throw new Error(`RPC reports chain ${actualChain} but CHAIN_ID=${cfg.CHAIN_ID}. Refusing to start (wrong network).`)
-}
+const client = createPublicClient({ transport: http(cfg.RPC_URL, { timeout: 30_000 }) })
 
 const attestor = new Attestor(cfg.ATTESTOR_PRIVATE_KEY as `0x${string}`, cfg.CHAIN_ID, cfg.VERIFIER_ADDRESS as `0x${string}`, cfg.REGISTRY_ADDRESS as `0x${string}`, client)
 
@@ -36,7 +30,7 @@ if (cfg.KEEPER_ENABLED && cfg.KEEPER_PRIVATE_KEY) {
   const keeperAccount = privateKeyToAccount(cfg.KEEPER_PRIVATE_KEY as `0x${string}`)
   const walletClient = createWalletClient({
     account: keeperAccount,
-    transport: http(cfg.RPC_URL),
+    transport: http(cfg.RPC_URL, { timeout: 30_000 }),
   })
   const keeper = new Keeper({
     escrowAddress: cfg.ESCROW_ADDRESS as `0x${string}`,
@@ -55,4 +49,18 @@ const app = createApp({ cfg, qie, attestor, indexer, challenges: new ChallengeSt
 app.listen(cfg.PORT, () => {
   console.log(`Alibi relayer on :${cfg.PORT}  chain=${cfg.CHAIN_ID}  qie=${qie.mode}  attestor=${attestor.address}`)
   if (qie.mode === 'mock') console.log('!! QIE_MODE=mock: identities are NOT verified by QIE Pass. Local/demo use only.')
+  void verifyChainId()
 })
+
+// Sanity check: the RPC must match CHAIN_ID; run after listen so slow RPCs don't block Render port binding.
+async function verifyChainId(): Promise<void> {
+  try {
+    const actualChain = await client.getChainId()
+    if (actualChain !== cfg.CHAIN_ID) {
+      console.error(`RPC reports chain ${actualChain} but CHAIN_ID=${cfg.CHAIN_ID}. Exiting (wrong network).`)
+      process.exit(1)
+    }
+  } catch (err) {
+    console.warn('RPC chainId check timed out or failed at startup (will continue running):', err instanceof Error ? err.message : err)
+  }
+}
