@@ -54,8 +54,8 @@ const schema = z
     KEEPER_MIN_GAS_WEI: z.coerce.bigint().default(1000000000000000n), // 0.001 QIE
   })
   .superRefine((v, ctx) => {
-    if (v.SANDBOX_ENABLED && (v.QIE_MODE !== 'mock' || v.CHAIN_ID !== 1983)) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'SANDBOX_ENABLED requires QIE_MODE=mock and CHAIN_ID=1983 (testnet only)', path: ['SANDBOX_ENABLED'] })
+    if (v.SANDBOX_ENABLED && v.CHAIN_ID !== 1983) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'SANDBOX_ENABLED requires CHAIN_ID=1983 (testnet only)', path: ['SANDBOX_ENABLED'] })
     }
     if (v.QIE_MODE === 'live' && (!v.QIE_PUBLIC_KEY || !v.QIE_SECRET_KEY)) {
       ctx.addIssue({
